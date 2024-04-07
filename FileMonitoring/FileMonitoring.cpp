@@ -17,7 +17,7 @@ FileMonitoring::FileMonitoring(const QString& filePath, QObject *parent) : QObje
         qDebug() << "Error: The file was not found in the specified path";
     }
 
-    connect(watcher, &::QFileSystemWatcher::fileChanged, this, &FileMonitoring::FileChanged);
+    connect(watcher, &::QFileSystemWatcher::fileChanged, this, &FileMonitoring::HandleFileChanged);
 }
 
 QString FileMonitoring::getFilePath() {
@@ -37,7 +37,7 @@ QDateTime FileMonitoring::getTimeChanging() {
 }
 
 void FileMonitoring::CheckFileStatus() {
-    QFileInfo updatedFileInfo(filePath);
+    QFileInfo updatedFileInfo = filePath;
 
     if (!updatedFileInfo.isFile()) {
         qDebug() << "Error: The file does not exist";
@@ -48,6 +48,12 @@ void FileMonitoring::CheckFileStatus() {
         qDebug() << "File exists and has been modified";
         qDebug() << "File size: " << getFileSize();
 
+        fileInfo = updatedFileInfo;
+
         emit FileChanged();
     }
+}
+
+void FileMonitoring::HandleFileChanged() {
+    qDebug() << "File has been modified";
 }

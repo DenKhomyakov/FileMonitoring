@@ -23,6 +23,9 @@ public:
 
     void CheckFileStatus();
 
+public slots:
+    void HandleFileChanged();
+
 signals:
     void FileChanged();
 
