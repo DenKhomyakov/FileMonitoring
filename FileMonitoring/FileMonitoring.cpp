@@ -1,9 +1,12 @@
 #include "FileMonitoring.h"
 #include <QDateTime>
 
-FileMonitoring::FileMonitoring(const QString& filePath) : QFileInfo(filePath) {
+FileMonitoring::FileMonitoring(const QString& filePath, QObject *parent) : QObject(parent) {
     this->filePath = filePath;
     fileInfo = QFileInfo(filePath);
+
+    watcher = new QFileSystemWatcher(this);
+    watcher->addPath(filePath);
 
     if (fileInfo.isFile()) {
         qDebug() << "File name: " << getFileName();
@@ -13,6 +16,8 @@ FileMonitoring::FileMonitoring(const QString& filePath) : QFileInfo(filePath) {
     } else {
         qDebug() << "Error: The file was not found in the specified path";
     }
+
+    connect(watcher, &::QFileSystemWatcher::fileChanged, this, &FileMonitoring::FileChanged);
 }
 
 QString FileMonitoring::getFilePath() {
@@ -42,5 +47,7 @@ void FileMonitoring::CheckFileStatus() {
     } else if (updatedFileInfo.lastModified() != fileInfo.lastModified()) {
         qDebug() << "File exists and has been modified";
         qDebug() << "File size: " << getFileSize();
+
+        emit FileChanged();
     }
 }

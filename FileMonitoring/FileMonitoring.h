@@ -1,14 +1,18 @@
 #ifndef FILEMONITORING_H
 #define FILEMONITORING_H
 
+#include <QObject>
 #include <QFileInfo>
 #include <QString>
 #include <QDateTime>
+#include <QFileSystemWatcher>
 #include <QDebug>
 
-class FileMonitoring : public QFileInfo {
+class FileMonitoring : public QObject {
+    Q_OBJECT
+
 public:
-    FileMonitoring(const QString& filePath);
+    FileMonitoring(const QString& filePath, QObject *parent = nullptr);
 
     ~FileMonitoring() {}
 
@@ -19,9 +23,13 @@ public:
 
     void CheckFileStatus();
 
+signals:
+    void FileChanged();
+
 private:
     QString filePath;
     QFileInfo fileInfo;
+    QFileSystemWatcher *watcher;
 };
 
 #endif // FILEMONITORING_H
