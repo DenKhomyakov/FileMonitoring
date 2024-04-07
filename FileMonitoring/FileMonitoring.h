@@ -17,6 +17,8 @@ public:
     qint64 getFileSize() const;
     QDateTime getTimeChanging();
 
+    void CheckFileStatus();
+
 private:
     QString filePath;
     QFileInfo fileInfo;

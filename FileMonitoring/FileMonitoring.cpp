@@ -30,3 +30,17 @@ qint64 FileMonitoring::getFileSize() const {
 QDateTime FileMonitoring::getTimeChanging() {
     return fileInfo.lastModified();
 }
+
+void FileMonitoring::CheckFileStatus() {
+    QFileInfo updatedFileInfo(filePath);
+
+    if (!updatedFileInfo.isFile()) {
+        qDebug() << "Error: The file does not exist";
+    } else if (updatedFileInfo.lastModified() == fileInfo.lastModified()) {
+        qDebug() << "File exists and has not been modified";
+        qDebug() << "File size: " << getFileSize();
+    } else if (updatedFileInfo.lastModified() != fileInfo.lastModified()) {
+        qDebug() << "File exists and has been modified";
+        qDebug() << "File size: " << getFileSize();
+    }
+}
