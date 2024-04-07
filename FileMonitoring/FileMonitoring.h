@@ -6,13 +6,14 @@
 #include <QString>
 #include <QDateTime>
 #include <QFileSystemWatcher>
+#include <QTimer>
 #include <QDebug>
 
 class FileMonitoring : public QObject {
     Q_OBJECT
 
 public:
-    FileMonitoring(const QString& filePath, QObject *parent = nullptr);
+    FileMonitoring(const QString& filePath, QObject *parent);
 
     ~FileMonitoring() {}
 
@@ -33,6 +34,7 @@ private:
     QString filePath;
     QFileInfo fileInfo;
     QFileSystemWatcher *watcher;
+    QTimer *timer;
 };
 
 #endif // FILEMONITORING_H

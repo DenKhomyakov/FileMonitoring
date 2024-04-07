@@ -17,7 +17,12 @@ FileMonitoring::FileMonitoring(const QString& filePath, QObject *parent) : QObje
         qDebug() << "Error: The file was not found in the specified path";
     }
 
-    connect(watcher, &::QFileSystemWatcher::fileChanged, this, &FileMonitoring::HandleFileChanged);
+    connect(this, &FileMonitoring::FileChanged, this, &FileMonitoring::HandleFileChanged);
+
+    timer = new QTimer(this);
+    timer->setInterval(100);
+    connect(timer, &QTimer::timeout, this, &FileMonitoring::CheckFileStatus);
+    timer->start();
 }
 
 QString FileMonitoring::getFilePath() {
