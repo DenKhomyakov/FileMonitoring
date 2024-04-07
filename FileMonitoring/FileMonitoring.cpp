@@ -6,9 +6,9 @@ FileMonitoring::FileMonitoring(const QString& filePath) : QFileInfo(filePath) {
     fileInfo = QFileInfo(filePath);
 
     if (fileInfo.isFile()) {
-        qDebug() << "File name: " << fileInfo.fileName();
-        qDebug() << "File path: " << filePath;
-        qDebug() <<  "File size: " << fileInfo.size();
+        qDebug() << "File name: " << getFileName();
+        qDebug() << "File path: " << getFilePath();
+        qDebug() <<  "File size: " << getFileSize();
         qDebug() << "Date and time of creation: " <<  fileInfo.birthTime();
     } else {
         qDebug() << "Error: The file was not found in the specified path";
