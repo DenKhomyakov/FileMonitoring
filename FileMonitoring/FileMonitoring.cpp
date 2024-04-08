@@ -12,7 +12,7 @@ FileMonitoring::FileMonitoring(const QString& filePath, QObject *parent) : QObje
         qDebug() << "File name: " << getFileName();
         qDebug() << "File path: " << getFilePath();
         qDebug() <<  "File size: " << getFileSize();
-        qDebug() << "Date and time of creation: " <<  fileInfo.birthTime();
+        qDebug() << "Date and time of creation: " << getBirthTimeOfFile();
     } else {
         qDebug() << "Error: The file was not found in the specified path";
     }
