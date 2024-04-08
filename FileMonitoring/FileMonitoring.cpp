@@ -12,7 +12,7 @@ FileMonitoring::FileMonitoring(const QString& filePath, QObject *parent) : QObje
         qDebug() << "File name: " << getFileName();
         qDebug() << "File path: " << getFilePath();
         qDebug() <<  "File size: " << getFileSize();
-        qDebug() << "Date and time of creation: " << getBirthTimeOfFile();
+        qDebug() << "Date and time of creation: " << getFileBirthTime();
     } else {
         qDebug() << "Error: The file was not found in the specified path";
     }
@@ -41,7 +41,7 @@ QDateTime FileMonitoring::getTimeChanging() {
     return fileInfo.lastModified();
 }
 
-QDateTime FileMonitoring::getBirthTimeOfFile() {
+QDateTime FileMonitoring::getFileBirthTime() {
     return fileInfo.birthTime();
 }
 
