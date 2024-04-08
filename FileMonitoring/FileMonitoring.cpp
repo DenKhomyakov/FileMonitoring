@@ -41,6 +41,10 @@ QDateTime FileMonitoring::getTimeChanging() {
     return fileInfo.lastModified();
 }
 
+QDateTime FileMonitoring::getBirthTimeOfFile() {
+    return fileInfo.birthTime();
+}
+
 void FileMonitoring::CheckFileStatus() {
     QFileInfo updatedFileInfo = filePath;
 

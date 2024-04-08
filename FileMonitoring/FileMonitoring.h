@@ -21,6 +21,7 @@ public:
     QFileInfo getFileName() const;
     qint64 getFileSize() const;
     QDateTime getTimeChanging();
+    QDateTime getBirthTimeOfFile();
 
     void CheckFileStatus();
 
