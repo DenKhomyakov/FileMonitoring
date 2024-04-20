@@ -25,7 +25,7 @@ FileMonitoring::FileMonitoring(const QString& filePath, QObject *parent) : QObje
     timer->start();
 }
 
-QString FileMonitoring::getFilePath() {
+QString FileMonitoring::getFilePath() const {
     return filePath;
 }
 
@@ -33,15 +33,31 @@ QFileInfo FileMonitoring::getFileName() const {
     return fileInfo.fileName();
 }
 
-qint64 FileMonitoring::getFileSize() const {
-    return fileInfo.size();
+QString FileMonitoring::getFileSize() const {
+    qint64 size = fileInfo.size();
+    QString unit;
+
+    if (size >= 1024*1024*1024) {
+        size /= 1024*1024*1024;
+        unit = "GB";
+    } else if (size >= 1024*1024) {
+        size /= 1024*1024;
+        unit = "MB";
+    } else if (size >= 1024) {
+        size /= 1024;
+        unit = "KB";
+    } else {
+        unit = "B";
+    }
+
+    return QString("%1 %2").arg(size).arg(unit);
 }
 
-QDateTime FileMonitoring::getTimeChanging() {
+QDateTime FileMonitoring::getTimeChanging() const {
     return fileInfo.lastModified();
 }
 
-QDateTime FileMonitoring::getFileBirthTime() {
+QDateTime FileMonitoring::getFileBirthTime() const {
     return fileInfo.birthTime();
 }
 

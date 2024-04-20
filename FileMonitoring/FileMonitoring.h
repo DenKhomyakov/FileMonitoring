@@ -7,6 +7,7 @@
 #include <QDateTime>
 #include <QFileSystemWatcher>
 #include <QTimer>
+#include <QByteArray>
 #include <QDebug>
 
 class FileMonitoring : public QObject {
@@ -17,11 +18,11 @@ public:
 
     ~FileMonitoring() {}
 
-    QString getFilePath();
+    QString getFilePath() const;
     QFileInfo getFileName() const;
-    qint64 getFileSize() const;
-    QDateTime getTimeChanging();
-    QDateTime getFileBirthTime();
+    QString getFileSize() const;
+    QDateTime getTimeChanging() const;
+    QDateTime getFileBirthTime() const;
 
     void CheckFileStatus();
 
