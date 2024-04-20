@@ -8,6 +8,8 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
+    setlocale(LC_ALL, "RUS");
+
     FileMonitoring fileMonitor("D:/Test/f1.txt", nullptr);
 
     while (true) {
