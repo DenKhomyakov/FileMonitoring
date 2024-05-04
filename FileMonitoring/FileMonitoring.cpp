@@ -17,11 +17,11 @@ FileMonitoring::FileMonitoring(const QString& filePath, QObject *parent) : QObje
         qDebug() << "Error: The file was not found in the specified path";
     }
 
-    connect(this, &FileMonitoring::FileChanged, this, &FileMonitoring::HandleFileChanged);
+    connect(this, &FileMonitoring::fileChanged, this, &FileMonitoring::handleFileChanged);
 
     timer = new QTimer(this);
     timer->setInterval(100);
-    connect(timer, &QTimer::timeout, this, &FileMonitoring::CheckFileStatus);
+    connect(timer, &QTimer::timeout, this, &FileMonitoring::checkFileStatus);
     timer->start();
 }
 
@@ -37,11 +37,11 @@ QString FileMonitoring::getFileSize() const {
     qint64 size = fileInfo.size();
     QString unit;
 
-    if (size >= 1024*1024*1024) {
-        size /= 1024*1024*1024;
+    if (size >= 1024 * 1024 * 1024) {
+        size /= 1024 * 1024 * 1024;
         unit = "GB";
-    } else if (size >= 1024*1024) {
-        size /= 1024*1024;
+    } else if (size >= 1024 * 1024) {
+        size /= 1024 * 1024;
         unit = "MB";
     } else if (size >= 1024) {
         size /= 1024;
@@ -61,7 +61,7 @@ QDateTime FileMonitoring::getFileBirthTime() const {
     return fileInfo.birthTime();
 }
 
-void FileMonitoring::CheckFileStatus() {
+void FileMonitoring::checkFileStatus() {
     QFileInfo updatedFileInfo = filePath;
 
     if (!updatedFileInfo.isFile()) {
@@ -75,10 +75,10 @@ void FileMonitoring::CheckFileStatus() {
 
         fileInfo = updatedFileInfo;
 
-        emit FileChanged();
+        emit fileChanged();
     }
 }
 
-void FileMonitoring::HandleFileChanged() {
+void FileMonitoring::handleFileChanged() {
     qDebug() << "File has been modified";
 }

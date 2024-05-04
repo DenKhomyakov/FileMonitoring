@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     FileMonitoring fileMonitor("D:/Test/f1.txt", nullptr);
 
     while (true) {
-        fileMonitor.CheckFileStatus();
+        fileMonitor.checkFileStatus();
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 

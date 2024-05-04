@@ -24,13 +24,13 @@ public:
     QDateTime getTimeChanging() const;
     QDateTime getFileBirthTime() const;
 
-    void CheckFileStatus();
+    void checkFileStatus();
 
 public slots:
-    void HandleFileChanged();
+    void handleFileChanged();
 
 signals:
-    void FileChanged();
+    void fileChanged();
 
 private:
     QString filePath;
