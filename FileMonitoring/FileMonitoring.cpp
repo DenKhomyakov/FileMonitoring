@@ -5,19 +5,22 @@ FileMonitoring::FileMonitoring(const QString& filePath, QObject *parent) : QObje
     this->filePath = filePath;
     fileInfo = QFileInfo(filePath);
 
-    watcher = new QFileSystemWatcher(this);
-    watcher->addPath(filePath);
+    fileRemoved = false;
+
+    firstInfoMessageShown = false;
+    fileChangedShown = false;
+    fileNotChangedShown = false;
 
     if (fileInfo.isFile()) {
         qDebug() << "File name: " << getFileName();
         qDebug() << "File path: " << getFilePath();
         qDebug() <<  "File size: " << getFileSize();
         qDebug() << "Date and time of creation: " << getFileBirthTime();
+
+        firstInfoMessageShown = true;
     } else {
         qDebug() << "Error: The file was not found in the specified path";
     }
-
-    connect(this, &FileMonitoring::fileChanged, this, &FileMonitoring::handleFileChanged);
 
     timer = new QTimer(this);
     timer->setInterval(100);
@@ -29,7 +32,7 @@ QString FileMonitoring::getFilePath() const {
     return filePath;
 }
 
-QFileInfo FileMonitoring::getFileName() const {
+QString FileMonitoring::getFileName() const {
     return fileInfo.fileName();
 }
 
@@ -65,20 +68,44 @@ void FileMonitoring::checkFileStatus() {
     QFileInfo updatedFileInfo = filePath;
 
     if (!updatedFileInfo.isFile()) {
-        qDebug() << "Error: The file does not exist";
-    } else if (updatedFileInfo.lastModified() == fileInfo.lastModified()) {
-        qDebug() << "File exists and has not been modified";
-        qDebug() << "File size: " << getFileSize();
-    } else if (updatedFileInfo.lastModified() != fileInfo.lastModified()) {
-        qDebug() << "File exists and has been modified";
-        qDebug() << "File size: " << getFileSize();
+        if (!fileRemoved) {
+            qDebug() << "Error: The file does not exist";
 
-        fileInfo = updatedFileInfo;
+            fileRemoved = true;
+        }
+    } else {
+        if (fileRemoved) {
+            qDebug() << "File has been detected";
+            qDebug() << "File size: " << getFileSize();
 
-        emit fileChanged();
+            emit fileReturned();
+
+            fileRemoved = false;
+            fileChangedShown = false;
+            fileNotChangedShown = false;
+        }
+
+        if (updatedFileInfo.lastModified() == fileInfo.lastModified()) {
+            if (firstInfoMessageShown && !fileChangedShown && !fileNotChangedShown) {
+                qDebug() << "File exists and has not been modified";
+                qDebug() << "File size: " << getFileSize();
+
+                emit fileNotChanged();
+
+                fileNotChangedShown = true;
+            }
+        }
+
+        if (updatedFileInfo.lastModified() != fileInfo.lastModified()) {
+            qDebug() << "File exists and has been modified";
+            qDebug() << "File size: " << getFileSize();
+
+            fileInfo = updatedFileInfo;
+
+            emit fileChanged();
+
+            fileChangedShown = true;
+            fileNotChangedShown = false;
+        }
     }
-}
-
-void FileMonitoring::handleFileChanged() {
-    qDebug() << "File has been modified";
 }

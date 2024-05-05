@@ -12,10 +12,5 @@ int main(int argc, char *argv[])
 
     FileMonitoring fileMonitor("D:/Test/f1.txt", nullptr);
 
-    while (true) {
-        fileMonitor.checkFileStatus();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
     return a.exec();
 }

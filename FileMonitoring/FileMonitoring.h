@@ -5,9 +5,7 @@
 #include <QFileInfo>
 #include <QString>
 #include <QDateTime>
-#include <QFileSystemWatcher>
 #include <QTimer>
-#include <QByteArray>
 #include <QDebug>
 
 class FileMonitoring : public QObject {
@@ -19,24 +17,29 @@ public:
     ~FileMonitoring() {}
 
     QString getFilePath() const;
-    QFileInfo getFileName() const;
+    QString getFileName() const;
     QString getFileSize() const;
     QDateTime getTimeChanging() const;
     QDateTime getFileBirthTime() const;
 
+public slots:
     void checkFileStatus();
 
-public slots:
-    void handleFileChanged();
-
 signals:
+    void fileReturned();
     void fileChanged();
+    void fileNotChanged();
 
 private:
     QString filePath;
     QFileInfo fileInfo;
-    QFileSystemWatcher *watcher;
     QTimer *timer;
+
+    bool firstInfoMessageShown;
+    bool fileChangedShown;
+    bool fileNotChangedShown;
+
+    bool fileRemoved;
 };
 
 #endif // FILEMONITORING_H
