@@ -1,5 +1,5 @@
 #include "FileMonitoring.h"
-#include <QDateTime>
+#include "Logger.h"
 
 FileMonitoring::FileMonitoring(const QString& filePath, QObject *parent) : QObject(parent) {
     this->filePath = filePath;
@@ -12,14 +12,14 @@ FileMonitoring::FileMonitoring(const QString& filePath, QObject *parent) : QObje
     fileNotChangedShown = false;
 
     if (fileInfo.isFile()) {
-        qDebug() << "File name: " << getFileName();
-        qDebug() << "File path: " << getFilePath();
-        qDebug() <<  "File size: " << getFileSize();
-        qDebug() << "Date and time of creation: " << getFileBirthTime();
+        Logger::loggerInfo("File name: " + getFileName());
+        Logger::loggerInfo("File path: " + getFilePath());
+        Logger::loggerInfo("File size: " + getFileSize());
+        Logger::loggerInfo("Date and time of creation: " + getFileBirthTime().toString());
 
         firstInfoMessageShown = true;
     } else {
-        qDebug() << "Error: The file was not found in the specified path";
+        Logger::loggerError("The file was not found in the specified path");
     }
 
     timer = new QTimer(this);
@@ -69,14 +69,14 @@ void FileMonitoring::checkFileStatus() {
 
     if (!updatedFileInfo.isFile()) {
         if (!fileRemoved) {
-            qDebug() << "Error: The file does not exist";
+            Logger::loggerError("The file does not exist");
 
             fileRemoved = true;
         }
     } else {
         if (fileRemoved) {
-            qDebug() << "File has been detected";
-            qDebug() << "File size: " << getFileSize();
+            Logger::loggerInfo("File has been detected");
+            Logger::loggerInfo("File size: " + getFileSize());
 
             emit fileReturned();
 
@@ -87,8 +87,8 @@ void FileMonitoring::checkFileStatus() {
 
         if (updatedFileInfo.lastModified() == fileInfo.lastModified()) {
             if (firstInfoMessageShown && !fileChangedShown && !fileNotChangedShown) {
-                qDebug() << "File exists and has not been modified";
-                qDebug() << "File size: " << getFileSize();
+                Logger::loggerInfo("File exists and has not been modified");
+                Logger::loggerInfo("File size: " + getFileSize());
 
                 emit fileNotChanged();
 
@@ -97,8 +97,8 @@ void FileMonitoring::checkFileStatus() {
         }
 
         if (updatedFileInfo.lastModified() != fileInfo.lastModified()) {
-            qDebug() << "File exists and has been modified";
-            qDebug() << "File size: " << getFileSize();
+            Logger::loggerInfo("File exists and has been modified");
+            Logger::loggerInfo("File size: " + getFileSize());
 
             fileInfo = updatedFileInfo;
 
