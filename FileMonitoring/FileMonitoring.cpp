@@ -19,11 +19,11 @@ FileMonitoring::FileMonitoring(const QString& filePath) {
     connect(this, &FileMonitoring::fileReturned, logger, &Logger::printFileReturned);
 
     if (fileInfo.isFile()) {
-        emitInitialFileInfo();
+        emit initialFileInfo(this);
 
         firstInfoMessageShown = true;
     } else {
-        emitFileNotExists();
+        emit fileNotExists();
     }
 
     timer = new QTimer(this);
@@ -104,14 +104,5 @@ void FileMonitoring::checkFileStatus() {
         }
     }
 }
-
-void FileMonitoring::emitInitialFileInfo() {
-    emit initialFileInfo(this);
-}
-
-void FileMonitoring::emitFileNotExists() {
-    emit fileNotExists();
-}
-
 
 
