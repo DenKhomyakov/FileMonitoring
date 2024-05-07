@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
 
     setlocale(LC_ALL, "RUS");
 
-    FileMonitoring fileMonitor("D:/Test/f1.txt", nullptr);
+    FileMonitoring fileMonitor("D:/Test/f1.txt");
 
     return a.exec();
 }

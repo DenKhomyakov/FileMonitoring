@@ -1,7 +1,7 @@
 #include "FileMonitoring.h"
 #include "Logger.h"
 
-FileMonitoring::FileMonitoring(const QString& filePath, QObject *parent) : QObject(parent) {
+FileMonitoring::FileMonitoring(const QString& filePath) {
     this->filePath = filePath;
     fileInfo = QFileInfo(filePath);
 

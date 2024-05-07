@@ -11,7 +11,7 @@ class FileMonitoring : public QObject {
     Q_OBJECT
 
 public:
-    FileMonitoring(const QString& filePath, QObject *parent);
+    FileMonitoring(const QString& filePath);
 
     ~FileMonitoring() {}
 
