@@ -21,6 +21,9 @@ public:
     QDateTime getTimeChanging() const;
     QDateTime getFileBirthTime() const;
 
+    void emitInitialFileInfo();
+    void emitFileNotExists();
+
 public slots:
     void checkFileStatus();
 
