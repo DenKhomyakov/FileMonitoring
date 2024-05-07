@@ -6,7 +6,6 @@
 #include <QString>
 #include <QDateTime>
 #include <QTimer>
-#include <QDebug>
 
 class FileMonitoring : public QObject {
     Q_OBJECT
@@ -26,9 +25,11 @@ public slots:
     void checkFileStatus();
 
 signals:
-    void fileReturned();
-    void fileChanged();
-    void fileNotChanged();
+    void initialFileInfo(FileMonitoring*);
+    void fileExistsAndModified(FileMonitoring*);
+    void fileExistsAndNotModified(FileMonitoring*);
+    void fileNotExists();
+    void fileReturned(FileMonitoring*);
 
 private:
     QString filePath;

@@ -6,7 +6,7 @@
 #include <QObject>
 #include "FileMonitoring.h"
 
-class Logger : QObject {
+class Logger : public QObject {
     Q_OBJECT
 
 public:
@@ -19,12 +19,6 @@ public slots:
     void printFileExistsAndNotModified(FileMonitoring* fileMonitoring);
     void printFileNotExists();
     void printFileReturned(FileMonitoring* fileMonitoring);
-
-/*
-public:
-    static void loggerInfo(const QString& message);
-    static void loggerError(const QString& message);
-*/
 };
 
 #endif // LOGGER_H
