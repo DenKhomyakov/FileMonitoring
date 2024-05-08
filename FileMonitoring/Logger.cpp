@@ -1,4 +1,5 @@
 #include "Logger.h"
+#include "FileMonitoring.h"
 
 void Logger::printInitialFileInfo(FileMonitoring* fileMonitoring) {
     qDebug() << "File name: " << fileMonitoring->getFileName();

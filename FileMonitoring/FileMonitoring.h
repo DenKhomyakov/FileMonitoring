@@ -7,13 +7,15 @@
 #include <QDateTime>
 #include <QTimer>
 
+class Logger;
+
 class FileMonitoring : public QObject {
     Q_OBJECT
 
 public:
     FileMonitoring(const QString& filePath);
 
-    ~FileMonitoring() {}
+    ~FileMonitoring();
 
     QString getFilePath() const;
     QString getFileName() const;
@@ -41,6 +43,8 @@ private:
     bool fileNotChangedShown;
 
     bool fileRemoved;
+
+    Logger* logger;
 };
 
 #endif // FILEMONITORING_H

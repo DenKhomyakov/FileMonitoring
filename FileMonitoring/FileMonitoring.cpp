@@ -11,7 +11,7 @@ FileMonitoring::FileMonitoring(const QString& filePath) {
     fileChangedShown = false;
     fileNotChangedShown = false;
 
-    Logger* logger = new Logger();
+    logger = new Logger();
     connect(this, &FileMonitoring::initialFileInfo, logger, &Logger::printInitialFileInfo);
     connect(this, &FileMonitoring::fileExistsAndModified, logger, &Logger::printFileExistsAndModified);
     connect(this, &FileMonitoring::fileExistsAndNotModified, logger, &Logger::printFileExistsAndNotModified);
@@ -30,6 +30,10 @@ FileMonitoring::FileMonitoring(const QString& filePath) {
     timer->setInterval(100);
     connect(timer, &QTimer::timeout, this, &FileMonitoring::checkFileStatus);
     timer->start();
+}
+
+FileMonitoring::~FileMonitoring() {
+    delete logger;
 }
 
 QString FileMonitoring::getFilePath() const {

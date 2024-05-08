@@ -4,7 +4,8 @@
 #include <QString>
 #include <QDebug>
 #include <QObject>
-#include "FileMonitoring.h"
+
+class FileMonitoring;
 
 class Logger : public QObject {
     Q_OBJECT
