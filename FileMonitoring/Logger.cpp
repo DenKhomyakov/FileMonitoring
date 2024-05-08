@@ -6,25 +6,30 @@ void Logger::printInitialFileInfo(FileMonitoring* fileMonitoring) {
     qDebug() << "File path: " << fileMonitoring->getFilePath();
     qDebug() << "File size: " << fileMonitoring->getFileSize();
     qDebug() << "Date and time of creation: " << fileMonitoring->getFileBirthTime();
+    qDebug() << "";
 }
 
 void Logger::printFileExistsAndModified(FileMonitoring* fileMonitoring) {
     qDebug() << "File exists and has been modified";
     qDebug() << "File size: " << fileMonitoring->getFileSize();
+    qDebug() << "";
 }
 
 void Logger::printFileExistsAndNotModified(FileMonitoring* fileMonitoring) {
     qDebug() << "File exists and has not been modified";
     qDebug() << "File size: " << fileMonitoring->getFileSize();
+    qDebug() << "";
 }
 
 void Logger::printFileNotExists() {
     qDebug() << "The file does not exist";
+    qDebug() << "";
 }
 
 void Logger::printFileReturned(FileMonitoring* fileMonitoring) {
     qDebug() << "File has been detected";
     qDebug() << "File size: " << fileMonitoring->getFileSize();
+    qDebug() << "";
 }
 
 // Передаю параметры в emit в FileMonitoring.cpp (то есть через сигналы), далее в Logger.h и Logger.cpp устраиваю приёмку этого сигнала и соответствующий вывод информации
