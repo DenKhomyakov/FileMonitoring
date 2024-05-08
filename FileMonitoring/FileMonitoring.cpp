@@ -95,9 +95,9 @@ void FileMonitoring::checkFileStatus() {
         }
 
         if (updatedFileInfo.lastModified() != fileInfo.lastModified()) {
-            emit fileExistsAndModified(this);
-
             fileInfo = updatedFileInfo;
+
+            emit fileExistsAndModified(this);
 
             fileChangedShown = true;
             fileNotChangedShown = false;
