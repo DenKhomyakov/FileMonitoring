@@ -1,16 +1,15 @@
 #include <QCoreApplication>
 #include "FileMonitoring.h"
 #include <thread>
-#include <iostream>
+#include <QDebug>
 
-using namespace std;
 
 int main(int argc, char *argv[]) {
     QCoreApplication a(argc, argv);
 
     setlocale(LC_ALL, "RUS");
 
-    cout << "\tFile monitoring program" << "\n" << endl;
+    qInfo() << "\tFile monitoring program" << "\n";
 
     FileMonitoring fileMonitor("D:/Test/f1.txt");
 

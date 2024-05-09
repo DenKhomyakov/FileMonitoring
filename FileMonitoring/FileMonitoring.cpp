@@ -5,11 +5,11 @@ FileMonitoring::FileMonitoring(const QString& filePath) {
     this->filePath = filePath;
     fileInfo = QFileInfo(filePath);
 
-    fileRemoved = false;
+    initialFileInfoShown = false;
+    fileModifiedShown = false;
+    fileNotModifiedShown = false;
 
-    firstInfoMessageShown = false;
-    fileChangedShown = false;
-    fileNotChangedShown = false;
+    fileRemoved = false;
 
     logger = new Logger();
     connect(this, &FileMonitoring::initialFileInfo, logger, &Logger::printInitialFileInfo);
@@ -21,7 +21,7 @@ FileMonitoring::FileMonitoring(const QString& filePath) {
     if (fileInfo.isFile()) {
         emit initialFileInfo(this);
 
-        firstInfoMessageShown = true;
+        initialFileInfoShown = true;
     } else {
         emit fileNotExists();
     }
@@ -86,15 +86,15 @@ void FileMonitoring::checkFileStatus() {
             emit fileReturned(this);
 
             fileRemoved = false;
-            fileChangedShown = false;
-            fileNotChangedShown = false;
+            fileModifiedShown = false;
+            fileNotModifiedShown = false;
         }
 
         if (updatedFileInfo.lastModified() == fileInfo.lastModified()) {
-            if (firstInfoMessageShown && !fileChangedShown && !fileNotChangedShown) {
+            if (initialFileInfoShown && !fileModifiedShown && !fileNotModifiedShown) {
                 emit fileExistsAndNotModified(this);
 
-                fileNotChangedShown = true;
+                fileNotModifiedShown = true;
             }
         }
 
@@ -103,8 +103,8 @@ void FileMonitoring::checkFileStatus() {
 
             emit fileExistsAndModified(this);
 
-            fileChangedShown = true;
-            fileNotChangedShown = false;
+            fileModifiedShown = true;
+            fileNotModifiedShown = false;
         }
     }
 }

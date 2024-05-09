@@ -38,10 +38,9 @@ private:
     QFileInfo fileInfo;
     QTimer *timer;
 
-    bool firstInfoMessageShown;
-    bool fileChangedShown;
-    bool fileNotChangedShown;
-
+    bool initialFileInfoShown;
+    bool fileModifiedShown;
+    bool fileNotModifiedShown;
     bool fileRemoved;
 
     Logger* logger;
