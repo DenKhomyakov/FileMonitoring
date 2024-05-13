@@ -30,7 +30,7 @@ signals:
     void initialFileInfo(File*);
     void fileExistsAndModified(File*);
     void fileExistsAndNotModified(File*);
-    void fileNotExists(const QString& name);
+    void fileNotExists(const QString& path);
     void fileReturned(File*);
 
 private:

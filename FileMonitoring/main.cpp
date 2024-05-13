@@ -3,7 +3,6 @@
 #include <thread>
 #include <QDebug>
 
-
 int main(int argc, char *argv[]) {
     QCoreApplication a(argc, argv);
 
@@ -11,7 +10,11 @@ int main(int argc, char *argv[]) {
 
     qInfo() << "\tFile monitoring program" << "\n";
 
-    FileMonitoring fileMonitor("D:/Test/f1.txt");
+    FileMonitoring fileMonitoring1;
+    fileMonitoring1.addFile("D:/Test/f1.txt");
+
+    FileMonitoring fileMonitoring2;
+    fileMonitoring2.addFile("D:/Test/f2.txt");
 
     return a.exec();
 }

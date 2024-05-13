@@ -2,6 +2,8 @@
 #include <QDateTime>
 
 File::File(const QString& path) : filePath(path) {
+    fileInfo = QFileInfo(path);
+
     fileModifiedShown = false;
     fileNotModifiedShown = false;
     fileRemoved = false;
@@ -75,21 +77,6 @@ bool File::isFileNotModifiedShown() {
     return fileNotModifiedShown;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+bool File::operator==(const File& other) const {
+    return filePath == other.filePath;
+}

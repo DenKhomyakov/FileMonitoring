@@ -1,33 +1,35 @@
 #include "Logger.h"
-#include "FileMonitoring.h"
+#include "File.h"
+#include <QDateTime>
+#include <QDebug>
 
-void Logger::printInitialFileInfo(FileMonitoring* fileMonitoring) {
-    qDebug() << "File name: " << fileMonitoring->getFileName();
-    qDebug() << "File path: " << fileMonitoring->getFilePath();
-    qDebug() << "File size: " << fileMonitoring->getFileSize();
-    qDebug() << "Date and time of creation: " << fileMonitoring->getFileBirthTime();
+void Logger::printInitialFileInfo(File* file) {
+    qDebug() << "File name: " << file->getFileName();
+    qDebug() << "File path: " << file->getFilePath();
+    qDebug() << "File size: " << file->getFileSize();
+    qDebug() << "Date and time of creation: " << file->getFileBirthTime();
     qDebug() << "";
 }
 
-void Logger::printFileExistsAndModified(FileMonitoring* fileMonitoring) {
-    qDebug() << "File exists and has been modified";
-    qDebug() << "File size: " << fileMonitoring->getFileSize();
+void Logger::printFileExistsAndModified(File* file) {
+    qDebug() << "File " << file->getFileName() << " exists and has been modified";
+    qDebug() << "File size: " << file->getFileSize();
     qDebug() << "";
 }
 
-void Logger::printFileExistsAndNotModified(FileMonitoring* fileMonitoring) {
-    qDebug() << "File exists and has not been modified";
-    qDebug() << "File size: " << fileMonitoring->getFileSize();
+void Logger::printFileExistsAndNotModified(File* file) {
+    qDebug() << "File " << file->getFileName() << " exists and has not been modified";
+    qDebug() << "File size: " << file->getFileSize();
     qDebug() << "";
 }
 
-void Logger::printFileNotExists() {
-    qDebug() << "The file does not exist";
+void Logger::printFileNotExists(const QString& path) {
+    qDebug() << "File on " << path << " does not exist";
     qDebug() << "";
 }
 
-void Logger::printFileReturned(FileMonitoring* fileMonitoring) {
-    qDebug() << "File has been detected";
-    qDebug() << "File size: " << fileMonitoring->getFileSize();
+void Logger::printFileReturned(File* file) {
+    qDebug() << "File " << file->getFileName() << " has been detected";
+    qDebug() << "File size: " << file->getFileSize();
     qDebug() << "";
 }

@@ -26,6 +26,8 @@ public:
     void setFileNotModifiedShown(bool flag);
     bool isFileNotModifiedShown();
 
+    bool operator==(const File& other) const;
+
 private:
     QString filePath;
     QFileInfo fileInfo;

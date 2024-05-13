@@ -21,11 +21,12 @@ FileMonitoring::~FileMonitoring() {
 
 void FileMonitoring::addFile(const QString& path) {
     File file(path);
+    file.setInfo(QFileInfo(path));
 
     if (file.getFileInfo().isFile()) {
         emit initialFileInfo(&file);
     } else {
-        emit fileNotExists(file.getFileName());
+        emit fileNotExists(file.getFilePath());
     }
 
     repository.push_back(file);
@@ -50,19 +51,18 @@ void FileMonitoring::removeFile(const File& file) {
         return;
     }
 
-    repository.removeOne(file);
+    repository.removeOne(file);             // Using compare operator
 }
 
 void FileMonitoring::checkFileStatus() {
     for (auto& it : repository) {
-        QFileInfo updatedFileInfo = it.getFilePath();
+        QFileInfo updatedFileInfo(it.getFilePath());
 
         if (!updatedFileInfo.isFile()) {
             if (!it.isRemoved()) {
-                emit fileNotExists(it.getFileName());
+                emit fileNotExists(it.getFilePath());
 
                 it.setRemoved(true);
-                removeFile(it);
             }
         } else {
             if (it.isRemoved()) {
@@ -71,6 +71,14 @@ void FileMonitoring::checkFileStatus() {
                 it.setRemoved(false);
                 it.setFileModifiedShown(false);
                 it.setFileNotModifiedShown(false);
+            }
+
+            if (updatedFileInfo.lastModified() == it.getTimeChanging()) {
+                if (!it.isFileModifiedShown() && !it.isFileNotModifiedShown()) {
+                    emit fileExistsAndNotModified(&it);
+
+                    it.setFileNotModifiedShown(true);
+                }
             }
 
             if (updatedFileInfo.lastModified() != it.getTimeChanging()) {
@@ -84,5 +92,3 @@ void FileMonitoring::checkFileStatus() {
         }
     }
 }
-
-
