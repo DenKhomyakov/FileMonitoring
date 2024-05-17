@@ -11,10 +11,10 @@ int main(int argc, char *argv[]) {
     qInfo() << "\tFile monitoring program" << "\n";
 
     FileMonitoring fileMonitoring1;
-    fileMonitoring1.addFile("D:/Test/f1.txt");
+    fileMonitoring1.addFile("../f1.txt");
 
     FileMonitoring fileMonitoring2;
-    fileMonitoring2.addFile("D:/Test/f2.txt");
+    fileMonitoring2.addFile("../f2.txt");
 
     return a.exec();
 }

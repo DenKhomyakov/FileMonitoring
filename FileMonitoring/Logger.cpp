@@ -4,32 +4,32 @@
 #include <QDebug>
 
 void Logger::printInitialFileInfo(File* file) {
-    qDebug() << "File name: " << file->getFileName();
-    qDebug() << "File path: " << file->getFilePath();
-    qDebug() << "File size: " << file->getFileSize();
-    qDebug() << "Date and time of creation: " << file->getFileBirthTime();
-    qDebug() << "";
+    qInfo() << "File name: " << file->getFileName();
+    qInfo() << "File path: " << file->getFilePath();
+    qInfo() << "File size: " << file->getFileSize();
+    qInfo() << "Date and time of creation: " << file->getFileBirthTime();
+    qInfo() << "";
 }
 
 void Logger::printFileExistsAndModified(File* file) {
-    qDebug() << "File " << file->getFileName() << " exists and has been modified";
-    qDebug() << "File size: " << file->getFileSize();
-    qDebug() << "";
+    qInfo() << "File " << file->getFileName() << " exists and has been modified";
+    qInfo() << "File size: " << file->getFileSize();
+    qInfo() << "";
 }
 
 void Logger::printFileExistsAndNotModified(File* file) {
-    qDebug() << "File " << file->getFileName() << " exists and has not been modified";
-    qDebug() << "File size: " << file->getFileSize();
-    qDebug() << "";
+    qInfo() << "File " << file->getFileName() << " exists and has not been modified";
+    qInfo() << "File size: " << file->getFileSize();
+    qInfo() << "";
 }
 
 void Logger::printFileNotExists(const QString& path) {
-    qDebug() << "File on " << path << " does not exist";
-    qDebug() << "";
+    qInfo() << "File on " << path << " does not exist";
+    qInfo() << "";
 }
 
 void Logger::printFileReturned(File* file) {
-    qDebug() << "File " << file->getFileName() << " has been detected";
-    qDebug() << "File size: " << file->getFileSize();
-    qDebug() << "";
+    qInfo() << "File " << file->getFileName() << " has been detected";
+    qInfo() << "File size: " << file->getFileSize();
+    qInfo() << "";
 }

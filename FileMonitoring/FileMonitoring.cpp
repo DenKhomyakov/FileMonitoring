@@ -51,7 +51,8 @@ void FileMonitoring::removeFile(const File& file) {
         return;
     }
 
-    repository.removeOne(file);             // Using compare operator
+    repository.removeOne(file);
+
 }
 
 void FileMonitoring::checkFileStatus() {
