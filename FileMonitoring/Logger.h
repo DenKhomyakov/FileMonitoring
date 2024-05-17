@@ -2,10 +2,9 @@
 #define LOGGER_H
 
 #include <QString>
-#include <QDebug>
 #include <QObject>
 
-class FileMonitoring;
+class File;
 
 class Logger : public QObject {
     Q_OBJECT
@@ -15,11 +14,11 @@ public:
     ~Logger() {}
 
 public slots:
-    void printInitialFileInfo(FileMonitoring* fileMonitoring);
-    void printFileExistsAndModified(FileMonitoring* fileMonitoring);
-    void printFileExistsAndNotModified(FileMonitoring* fileMonitoring);
-    void printFileNotExists();
-    void printFileReturned(FileMonitoring* fileMonitoring);
+    void printInitialFileInfo(File* file);
+    void printFileExistsAndModified(File* file);
+    void printFileExistsAndNotModified(File* file);
+    void printFileNotExists(const QString& path);
+    void printFileReturned(File* file);
 };
 
 #endif // LOGGER_H

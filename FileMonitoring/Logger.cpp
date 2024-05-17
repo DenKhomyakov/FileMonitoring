@@ -1,33 +1,35 @@
 #include "Logger.h"
-#include "FileMonitoring.h"
+#include "File.h"
+#include <QDateTime>
+#include <QDebug>
 
-void Logger::printInitialFileInfo(FileMonitoring* fileMonitoring) {
-    qDebug() << "File name: " << fileMonitoring->getFileName();
-    qDebug() << "File path: " << fileMonitoring->getFilePath();
-    qDebug() << "File size: " << fileMonitoring->getFileSize();
-    qDebug() << "Date and time of creation: " << fileMonitoring->getFileBirthTime();
-    qDebug() << "";
+void Logger::printInitialFileInfo(File* file) {
+    qInfo() << "File name: " << file->getFileName();
+    qInfo() << "File path: " << file->getFilePath();
+    qInfo() << "File size: " << file->getFileSize();
+    qInfo() << "Date and time of creation: " << file->getFileBirthTime();
+    qInfo() << "";
 }
 
-void Logger::printFileExistsAndModified(FileMonitoring* fileMonitoring) {
-    qDebug() << "File exists and has been modified";
-    qDebug() << "File size: " << fileMonitoring->getFileSize();
-    qDebug() << "";
+void Logger::printFileExistsAndModified(File* file) {
+    qInfo() << "File " << file->getFileName() << " exists and has been modified";
+    qInfo() << "File size: " << file->getFileSize();
+    qInfo() << "";
 }
 
-void Logger::printFileExistsAndNotModified(FileMonitoring* fileMonitoring) {
-    qDebug() << "File exists and has not been modified";
-    qDebug() << "File size: " << fileMonitoring->getFileSize();
-    qDebug() << "";
+void Logger::printFileExistsAndNotModified(File* file) {
+    qInfo() << "File " << file->getFileName() << " exists and has not been modified";
+    qInfo() << "File size: " << file->getFileSize();
+    qInfo() << "";
 }
 
-void Logger::printFileNotExists() {
-    qDebug() << "The file does not exist";
-    qDebug() << "";
+void Logger::printFileNotExists(const QString& path) {
+    qInfo() << "File on " << path << " does not exist";
+    qInfo() << "";
 }
 
-void Logger::printFileReturned(FileMonitoring* fileMonitoring) {
-    qDebug() << "File has been detected";
-    qDebug() << "File size: " << fileMonitoring->getFileSize();
-    qDebug() << "";
+void Logger::printFileReturned(File* file) {
+    qInfo() << "File " << file->getFileName() << " has been detected";
+    qInfo() << "File size: " << file->getFileSize();
+    qInfo() << "";
 }

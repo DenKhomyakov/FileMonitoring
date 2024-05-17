@@ -1,30 +1,13 @@
 #include "FileMonitoring.h"
 #include "Logger.h"
 
-FileMonitoring::FileMonitoring(const QString& filePath) {
-    this->filePath = filePath;
-    fileInfo = QFileInfo(filePath);
-
-    initialFileInfoShown = false;
-    fileModifiedShown = false;
-    fileNotModifiedShown = false;
-
-    fileRemoved = false;
-
+FileMonitoring::FileMonitoring() {
     logger = new Logger();
     connect(this, &FileMonitoring::initialFileInfo, logger, &Logger::printInitialFileInfo);
     connect(this, &FileMonitoring::fileExistsAndModified, logger, &Logger::printFileExistsAndModified);
     connect(this, &FileMonitoring::fileExistsAndNotModified, logger, &Logger::printFileExistsAndNotModified);
     connect(this, &FileMonitoring::fileNotExists, logger, &Logger::printFileNotExists);
     connect(this, &FileMonitoring::fileReturned, logger, &Logger::printFileReturned);
-
-    if (fileInfo.isFile()) {
-        emit initialFileInfo(this);
-
-        initialFileInfoShown = true;
-    } else {
-        emit fileNotExists();
-    }
 
     timer = new QTimer(this);
     timer->setInterval(100);
@@ -36,77 +19,77 @@ FileMonitoring::~FileMonitoring() {
     delete logger;
 }
 
-QString FileMonitoring::getFilePath() const {
-    return filePath;
-}
+void FileMonitoring::addFile(const QString& path) {
+    File file(path);
+    file.setInfo(QFileInfo(path));
 
-QString FileMonitoring::getFileName() const {
-    return fileInfo.fileName();
-}
-
-QString FileMonitoring::getFileSize() const {
-    qint64 size = fileInfo.size();
-    QString unit;
-
-    if (size >= 1024 * 1024 * 1024) {
-        size /= 1024 * 1024 * 1024;
-        unit = "GB";
-    } else if (size >= 1024 * 1024) {
-        size /= 1024 * 1024;
-        unit = "MB";
-    } else if (size >= 1024) {
-        size /= 1024;
-        unit = "KB";
+    if (file.getFileInfo().isFile()) {
+        emit initialFileInfo(&file);
     } else {
-        unit = "B";
+        emit fileNotExists(file.getFilePath());
     }
 
-    return QString("%1 %2").arg(size).arg(unit);
+    repository.push_back(file);
 }
 
-QDateTime FileMonitoring::getTimeChanging() const {
-    return fileInfo.lastModified();
+void FileMonitoring::removeFile(const QString& path) {
+    int index = -1;
+
+    for (int i = 0; i < repository.size(); ++i) {
+        if (repository[i].getFilePath() == path) {
+            index = i;
+
+            break;
+        }
+    }
+
+    repository.removeAt(index);
 }
 
-QDateTime FileMonitoring::getFileBirthTime() const {
-    return fileInfo.birthTime();
+void FileMonitoring::removeFile(const File& file) {
+    if (repository.isEmpty()) {
+        return;
+    }
+
+    repository.removeOne(file);
+
 }
 
 void FileMonitoring::checkFileStatus() {
-    QFileInfo updatedFileInfo = filePath;
+    for (auto& it : repository) {
+        QFileInfo updatedFileInfo(it.getFilePath());
 
-    if (!updatedFileInfo.isFile()) {
-        if (!fileRemoved) {
-            emit fileNotExists();
+        if (!updatedFileInfo.isFile()) {
+            if (!it.isRemoved()) {
+                emit fileNotExists(it.getFilePath());
 
-            fileRemoved = true;
-        }
-    } else {
-        if (fileRemoved) {
-            emit fileReturned(this);
-
-            fileRemoved = false;
-            fileModifiedShown = false;
-            fileNotModifiedShown = false;
-        }
-
-        if (updatedFileInfo.lastModified() == fileInfo.lastModified()) {
-            if (initialFileInfoShown && !fileModifiedShown && !fileNotModifiedShown) {
-                emit fileExistsAndNotModified(this);
-
-                fileNotModifiedShown = true;
+                it.setRemoved(true);
             }
-        }
+        } else {
+            if (it.isRemoved()) {
+                emit fileReturned(&it);
 
-        if (updatedFileInfo.lastModified() != fileInfo.lastModified()) {
-            fileInfo = updatedFileInfo;
+                it.setRemoved(false);
+                it.setFileModifiedShown(false);
+                it.setFileNotModifiedShown(false);
+            }
 
-            emit fileExistsAndModified(this);
+            if (updatedFileInfo.lastModified() == it.getTimeChanging()) {
+                if (!it.isFileModifiedShown() && !it.isFileNotModifiedShown()) {
+                    emit fileExistsAndNotModified(&it);
 
-            fileModifiedShown = true;
-            fileNotModifiedShown = false;
+                    it.setFileNotModifiedShown(true);
+                }
+            }
+
+            if (updatedFileInfo.lastModified() != it.getTimeChanging()) {
+                it.setInfo(updatedFileInfo);
+
+                emit fileExistsAndModified(&it);
+
+                it.setFileModifiedShown(true);
+                it.setFileNotModifiedShown(false);
+            }
         }
     }
 }
-
-

@@ -6,6 +6,8 @@
 #include <QString>
 #include <QDateTime>
 #include <QTimer>
+#include <QList>
+#include "File.h"
 
 class Logger;
 
@@ -13,36 +15,27 @@ class FileMonitoring : public QObject {
     Q_OBJECT
 
 public:
-    FileMonitoring(const QString& filePath);
-
+    FileMonitoring();
     ~FileMonitoring();
 
-    QString getFilePath() const;
-    QString getFileName() const;
-    QString getFileSize() const;
-    QDateTime getTimeChanging() const;
-    QDateTime getFileBirthTime() const;
+    void addFile(const QString& path);
+
+    void removeFile(const QString& path);
+    void removeFile(const File& file);
 
 public slots:
     void checkFileStatus();
 
 signals:
-    void initialFileInfo(FileMonitoring*);
-    void fileExistsAndModified(FileMonitoring*);
-    void fileExistsAndNotModified(FileMonitoring*);
-    void fileNotExists();
-    void fileReturned(FileMonitoring*);
+    void initialFileInfo(File*);
+    void fileExistsAndModified(File*);
+    void fileExistsAndNotModified(File*);
+    void fileNotExists(const QString& path);
+    void fileReturned(File*);
 
 private:
-    QString filePath;
-    QFileInfo fileInfo;
+    QList<File> repository;
     QTimer *timer;
-
-    bool initialFileInfoShown;
-    bool fileModifiedShown;
-    bool fileNotModifiedShown;
-    bool fileRemoved;
-
     Logger* logger;
 };
 
