@@ -14,7 +14,8 @@ public:
     QDateTime getTimeChanging() const;
     QDateTime getFileBirthTime() const;
 
-    void setInfo(const QFileInfo& info);
+    //void setInfo(const QFileInfo& info);
+    void refreshFileInfo();
     const QFileInfo& getFileInfo();
 
     void setRemoved(bool flag);
