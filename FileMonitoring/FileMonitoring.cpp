@@ -21,7 +21,7 @@ FileMonitoring::~FileMonitoring() {
 
 void FileMonitoring::addFile(const QString& path) {
     File file(path);
-    file.setInfo(QFileInfo(path));
+    file.refreshFileInfo();
 
     if (file.getFileInfo().isFile()) {
         emit initialFileInfo(&file);
@@ -64,6 +64,7 @@ void FileMonitoring::checkFileStatus() {
                 emit fileNotExists(it.getFilePath());
 
                 it.setRemoved(true);
+                it.refreshFileInfo();
             }
         } else {
             if (it.isRemoved()) {
@@ -83,7 +84,7 @@ void FileMonitoring::checkFileStatus() {
             }
 
             if (updatedFileInfo.lastModified() != it.getTimeChanging()) {
-                it.setInfo(updatedFileInfo);
+                it.refreshFileInfo();
 
                 emit fileExistsAndModified(&it);
 

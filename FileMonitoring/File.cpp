@@ -45,8 +45,14 @@ QDateTime File::getFileBirthTime() const {
     return fileInfo.birthTime();
 }
 
+/*
 void File::setInfo(const QFileInfo& info) {
     fileInfo = info;
+}
+*/
+
+void File::refreshFileInfo() {
+    return fileInfo.refresh();
 }
 
 const QFileInfo& File::getFileInfo() {
